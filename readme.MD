@@ -9,7 +9,7 @@ I setup a KVM box and install the following VM with the following Server distrib
 
 ## Installation
 
-What is involved of setting a the distribution up:
+What is involved of setting distribution up:
 
 ### Centos 6
 
