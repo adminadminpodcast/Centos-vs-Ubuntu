@@ -414,9 +414,10 @@ mkdir
 I installed the following services and want to see where the config files are located and the verison of the software installed.
 #### Apache
 
-The packages is called httpd on Centos and apache2.
+The packages is called httpd on Centos and apache2 on Ubuntu.
 
-Config file: /etc/httpd/conf/httpd.conf (All Distributions)
+Config file: /etc/httpd/conf/httpd.conf (CentOS / Redhat)
+Config file: /etc/apache2/apache2.conf (Ubuntu)
 Default Website Files: /var/www/html (All Distributions)
 
 | Distribution       | Apache Version      
