@@ -428,7 +428,9 @@ Default Website Files: /var/www/html (All Distributions)
 | Centos 7      | 2.4.29    | 
 | Ubuntu 16.04 LTS | 4.4.0-145-generic    | 
 | Ubuntu 18.04 LTS | 4.15.0-47-generic   |
-   | 
+
+To host multiple domains or sites off of a single IP address, Apache uses "virtual host" which are normally configured in the congfile file.
+
 #### Nginx
 Config file: /etc/nginx/nginx.conf (All Distributions)
 
@@ -443,7 +445,15 @@ Default Website Files:/usr/share/nginx/html (All Distributions)
 | Ubuntu 16.04 LTS | 1.10.3   | 
 | Ubuntu 18.04 LTS | 1.14.0  |
 
-sitesenable block
+To host multiple domains or sites off of a single IP address, Nginx Apache use serverblocks with each site has its own config file located in:
+```
+/etc/nginx/sites-available/example.com
+```
+and then create a symbolic links from these files to the sites-enabled directory:
+```
+sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+```
+Then restrart nginx.
 
 #### Mysql
 All Distributions are using mysql except centos 7 which is using MariaDB 
