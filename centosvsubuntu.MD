@@ -417,7 +417,9 @@ I installed the following services and want to see where the config files are lo
 The packages is called httpd on Centos and apache2 on Ubuntu.
 
 Config file: /etc/httpd/conf/httpd.conf (CentOS / Redhat)
+
 Config file: /etc/apache2/apache2.conf (Ubuntu)
+
 Default Website Files: /var/www/html (All Distributions)
 
 | Distribution       | Apache Version      
@@ -429,9 +431,10 @@ Default Website Files: /var/www/html (All Distributions)
    | 
 #### Nginx
 Config file: /etc/nginx/nginx.conf (All Distributions)
+
 Config file: /etc/nginx/conf.d/default.conf (centos 6 also use this config files)
-Default Website Files:
-/usr/share/nginx/html (All Distributions)
+
+Default Website Files:/usr/share/nginx/html (All Distributions)
 
 | Distribution       | Nginx Version      
 | ------------- |-------------| 
