@@ -445,7 +445,7 @@ Default Website Files:/usr/share/nginx/html (All Distributions)
 | Ubuntu 16.04 LTS | 1.10.3   | 
 | Ubuntu 18.04 LTS | 1.14.0  |
 
-To host multiple domains or sites off of a single IP address, Nginx Apache use serverblocks with each site has its own config file located in:
+To host multiple domains or sites off of a single IP address, Nginx Apache use serverblocks with each site has its own config file like below:
 ```
 /etc/nginx/sites-available/example.com
 ```
@@ -466,7 +466,7 @@ All Distributions are using mysql except centos 7 which is using MariaDB
 | Ubuntu 18.04 LTS | 5.7.25 | mysql |
 
 #### Samba
-Config file: /etc/nginx/nginx.conf (All Distributions)
+Config file: /etc/samba/smb.conf (All Distributions)
 
 | Distribution       | Samba Version      
 | ------------- |-------------| 
