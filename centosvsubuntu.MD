@@ -25,7 +25,7 @@ What is involved of setting a the distribution up:
 
 Time to Install:17 mins
 
-*Remember carefully not to miss the "configure network" box in the bottom right hand corner and remember to select "connect to network automatically". If not when you boot you will not get any network access
+*Remember carefully not to miss the "configure network" box in the bottom right hand corner and remember to select "connect to network automatically". If not when you boot you will not get any network access. Although you can get around this by editing /etc/sysconfig/network-scripts/ifcfg-eth{0,1} and set ONBOOT=true
 
 ### Centos 7
 
@@ -123,18 +123,26 @@ To see current NIC and IP address settings
 ```
 ip address
 ```
-Type ```nmtui``` command in your terminal to open network manager to configure thr ip settings . This can configure IP settings and Hostname.
+or you can use:
+```
+nmcli
+```
 
-Use the followinf to apply settings.
+Type ```nmtui``` command in your terminal to open network manager to configure the ip settings . This can configure IP settings and Hostname.
+
+Use the following to apply settings.
 
 ```
 systemctl restart network
 ```
 
-Again Network settings located in this file:
+Network settings located in the same directory, but depending on your ethernet card and systemd the name of the card can change:
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/ch-consistent_network_device_naming
+
 
 ```
-/etc/sysconfig/network-scripts/ifcfg-eth0 
+/etc/sysconfig/network-scripts/ifcfg-<adaptor_name>
 ```
 
 ### Ubuntu 16.04 LTS
@@ -198,7 +206,7 @@ sudo netplan --debug  apply
 After the base install we needed to update the system. 
 
 ### Centos 6
-Update Cmd: 
+Update Cmd - the -y answers yes to any prompts given: 
 ``` yum -y update ```
 
 20 Packages to upgrade: 89MB
@@ -217,6 +225,10 @@ Time to install the upgrades: 12 mins
 ### Ubuntu 16.04 LTS
 Update Cmd: 
 ``` sudo apt update ``` and ``` sudo apt install``` 
+
+or alternatively you can put these together:
+
+``` sudo apt update && sudo apt install```
 
 39 Packages to upgrade: 15MB
 
@@ -258,7 +270,7 @@ service sshd restart
 I enabled this as part of the setup. So do not need to configure it here.
 
 ## Hard Drive Layout
-All distribution expect Ubuntu 18.04 seem to be using LVM as a logical volume management, If you decide to chose the defaults partition options in the installer.
+All distribution except Ubuntu 18.04 seem to be using LVM as a logical volume management, If you decide to choose the defaults partition options in the installer.
 
 The following commands all seem to work in all four Distributions
 
@@ -281,13 +293,13 @@ fdisk -l
 ![](Disklayout-ubuntu1804.png)
 
 ## System Performance and Daemon process
-All Distributions using systemd expect Centos 6 which is using init.d as in control system.
+All the distributions are using systemd except Centos 6 which is using init.d as its control system.
 
 All 4 distributions seems that you can use the following commands to stop and  start services
 ```
 service httpd start|stop|restart
 ```
-On the systemd distribution this seem to shortcut to the systemctl cmd which is used to control services in systemd.
+On systems running systemd the service command is linked to the systemctl cmd which is used to control services in systemd.
 
 To enable services on start up. In Centos 6 you can use:
 ```
@@ -312,16 +324,20 @@ Below is htop output of the system loads of each system when the system is idle.
 ## Firewalls
 
 ### Centos 6
-By Default this is IP tables and it is enable by default. Use the following command to see the current firewall rules
+By Default this is IP tables and it is enabled by default. Use the following command to see the current firewall rules
 
 ```
 iptables --line -vnL
 ``` 
-The default rules allow outbound traffic to be allowed and all inbound traffic is block expect port 22, which allows SSH connections in.
+The default rules allow outbound traffic to be allowed and all inbound traffic is block except port 22, which allows SSH connections in.
 
-To disable firewall:
+To stop the firewall:
 ```
 service iptables stop
+```
+To disable the firewall:
+```
+chkconfig iptables off
 ```
 
 To allow port 80:
@@ -335,16 +351,20 @@ service iptables restart
 ```
 ### Centos 7
 
-By default Centos 7 uses firewalld and is enable by default and allow traffic outbound and inbound port 22.
+By default Centos 7 uses firewalld and it's enabled by default and allow traffic outbound and inbound port 22.
 
-To disable firewall:
+To stop the firewall:
 ```
 systemctl stop firewalld
+```
+To disable the firewall:
+```
+systemctl disable firewalld
 ```
 
 More info to follow...
 ### Ubuntu 16.04 and 18.04 LTS
-Ubuntu use UFW (Uncomplicated Firewall) by default and is disable by default.
+Ubuntu use UFW (Uncomplicated Firewall) by default and it's disabled by default.
 
 To view status of UFW:
 ```
@@ -353,7 +373,7 @@ sudo ufw status verbose
 
 ## Stopping and Rebooting the distribution
 
-All system seem to use the same following commands:
+All systems seem to use the same following commands:
 
 ```
 restart
@@ -366,15 +386,15 @@ shutdown now -h
 If not it puts the server into single user mode and will not power off.
 ## Logs
 
-The default log locations to seem to be the same on all distribution
+The default log locations seem to be the same on all distributions, although systemd you now use `journalctl`, the default path is:
 ```
-\var\log
+/var/log
 ```
-```dmesg``` work all distribution as well
+```dmesg``` works on all distribution as well, this is for displaying kernel messages.
 
 ## User, File and Folder Permissions
 
-The follow commands all work on all 4 distribution.
+The following commands all work on all 4 distributions.
 ```
 adduser
 groupadd
@@ -394,9 +414,10 @@ mkdir
 I installed the following services and want to see where the config files are located and the verison of the software installed.
 #### Apache
 
-The packages is called httpd on Centos and apache2.
+The packages is called httpd on Centos and apache2 on Ubuntu.
 
-Config file: /etc/httpd/conf/httpd.conf (All Distributions)
+Config file: /etc/httpd/conf/httpd.conf (CentOS / Redhat)
+Config file: /etc/apache2/apache2.conf (Ubuntu)
 Default Website Files: /var/www/html (All Distributions)
 
 | Distribution       | Apache Version      
@@ -422,7 +443,7 @@ Default Website Files:
 sitesenable block
 
 #### Mysql
-All Distributions are using mysql expect centos 7 which is using MariaDB 
+All Distributions are using mysql except centos 7 which is using MariaDB 
 
  Distribution       | Version  | Variant |     
 | ------------- |-------------| ----|
@@ -444,18 +465,18 @@ Config file: /etc/nginx/nginx.conf (All Distributions)
 
 ## Conclusion
 
-So after all this discovery work the different between centos and ubuntu  are quite small. Each just distribution has it own little way of doing things. Like how to set IP network settings and how to update the system. But all the other main linux  commands you will use on the system like moving files about, list dirs, greping all use the same commands.
+So after all this discovery work the differences between centos and ubuntu are quite small. Each distribution has its own little way of doing things. Like how to set IP network settings and how to update the system. But all the other main linux commands you will use on the system like moving files about, list dirs, greping all use the same commands.
 
-So I am a lot happier now that i have done this little project and have learnt that it does not really mater what linux distribution you chose to focus on, you should still be able to find your self around different linux distribution.
+So I am a lot happier now that i have done this little project and have learnt that it does not really matter what linux distribution you choose to focus on, you should still be able to find your self around different linux distributions.
 
-The main thing I also noticed and have read online is that Centos/Redhat is designed for a corporate environment where Ubuntu is design for fast moving, up and coming cloud internet company. With Centos you are given 10 years of security updates. Where Ubuntu release a LTS every two years and this is support for 5 years. But you can pay for a extra 5 years security updates.
+The main thing I also noticed and have read online is that Centos/Redhat is designed for a corporate environment where Ubuntu is designed for fast moving, up and coming cloud internet companies. With Centos you are given 10 years of security updates. Where Ubuntu release a LTS every two years and this is supported for 5 years. But you can pay for a extra 5 years of security updates.
 
-I notice that Centos did not have things like wget installed out of the  box and that it had the minimal version of vim installed so thing like colour syntax does work when editing config files.
+I notice that Centos did not have things like wget installed out of the box and that it had the minimal version of vim installed so things like colour syntax doesn't work when editing config files.
 
-The other thing with centos has by default is SELinux enabled. Which give you as extra lay of security. But most people disable it if they cant get their application working. 
+The other thing with CentOS is it has SELinux enabled by default. Which gives you an extra layer of security. But most people disable it if they cant get their application working. 
 
 In ubuntu the root account is disabled and you have to setup user accounts and then use sudo to run commands as root. This is configured out of the box, where compared to Centos out of the box you have to use the root account and you have to add users and setup sudo.
 
-So to me I am like Ubuntu server more then Centos and think this is what I am going to focus on. I am really impressed with 18.04 edition and like the install. But i will keeping a eye on Centos as i still need to look after a couple of these boxes.
+So to me I like Ubuntu server more then Centos and think this is what I am going to focus on. I am really impressed with 18.04 edition and like the install. But i will be keeping an eye on Centos as I still need to look after a couple of these boxes.
 
 
