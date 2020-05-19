@@ -41,7 +41,7 @@ Time to Install:17 mins
 
 Time to Install:62 mins.
 
-This is install on about 20 Mins, but then takes ages to Post-Install task (42 Mins). This is a known bug installing centos 7 on KVM VM.
+This is install on about 20 Mins, but then takes ages to Post-Install task (42 Mins). This is a known bug installing centos 7 on Virtualbox VM.
 
 https://bugs.centos.org/view.php?id=14980#bugnotes
 
